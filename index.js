@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
       fetch(pokeAPI + name)
       .then((res)=> res.json())
       .then((data)=> {
-      console.log(data)
+      // console.log(data)
       cardConstruct(data)
       })
       .catch(function(error){
@@ -79,32 +79,54 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function addToPokedex(e){
       let addName = e.target.parentNode.parentNode.id
+      const miniContainer = document.createElement('div')
+      pokedex.appendChild(miniContainer)
       const dexEntry = document.createElement('p')
       dexEntry.innerText = addName
       dexEntry.id = 'caught-' + addName
-      pokedex.appendChild(dexEntry)
+      miniContainer.appendChild(dexEntry)
       dexEntry.addEventListener('click', choosePokemon)
       pokedex.className = ''
+      const deleteBTN = document.createElement('button')
+      deleteBTN.innerText = 'x'
+      deleteBTN.className = 'delete'
+      miniContainer.appendChild(deleteBTN)
+      deleteBTN.addEventListener('click', removeFromDex)
     }
 
     function choosePokemon(e){
+      // console.log(e.target.parentNode)
+
+    
       if(e.target.innerText[0] === '♥'){
         const makeArr = e.target.innerText.split(' ');
         e.target.innerText = makeArr[1]
         e.target.style.color = 'white'
-       
-      }else{
+         
+       }else{
         const heartName = '♥ ' + e.target.innerText
         e.target.innerHTML = heartName
         e.target.style.color = 'red'
-      }
-
+        }
 
     }
+
+    function removeFromDex(e){
+      
+      e.target.parentNode.remove()
+    }
+
+    document.querySelector("#open-dex").addEventListener("click",(e)=>{
+      if(pokedex.className === "hidden") {
+        pokedex.className = ""
+      }else {
+        pokedex.className = "hidden"
+      }
+    })
 
   const pokecard = document.querySelector("#pokecard")
   const pokemon = document.getElementsByClassName('pokemon')
   const pokedex = document.querySelector('#pokedex')
-  console.log(pokemon)
+  // console.log(pokemon)
 
   });
