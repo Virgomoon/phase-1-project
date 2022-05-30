@@ -99,8 +99,17 @@ body {
     top: 20%;
     left: 0;
     bottom: 0;
+    overflow-y: scroll;
   }
 
   .hidden {
     display: none;
+  }
+
+  .button {
+    border-radius: 10px;
+  }
+
+  .delete {
+    border-radius: 10px;
   }

@@ -65,6 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
       imgCon.src = cardDefault
       pokeData.innerHTML = cardData
       const catchPoke = document.createElement('button')
+      catchPoke.className = 'button'
       catchPoke.innerText = 'Catch this Pokemon!'
       card.appendChild(imgCon)
       card.appendChild(pokeData)
@@ -92,6 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
       deleteBTN.className = 'delete'
       miniContainer.appendChild(deleteBTN)
       deleteBTN.addEventListener('click', removeFromDex)
+      // console.log(pokedex)
     }
 
     function choosePokemon(e){
@@ -114,6 +116,8 @@ document.addEventListener("DOMContentLoaded", () => {
     function removeFromDex(e){
       
       e.target.parentNode.remove()
+      runCheck()
+      console.log(pokedex.innerHTML)
     }
 
     document.querySelector("#open-dex").addEventListener("click",(e)=>{
@@ -124,9 +128,19 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     })
 
+    function runCheck(){
+        // console.log(pokedex.firstChild.typeof)
+        // console.log(pokedex.innerHTML.length)
+        if(pokedex.innerHTML.length <= 4){
+          pokedex.className = "hidden"
+        }
+        
+      }
+    // }
+
   const pokecard = document.querySelector("#pokecard")
-  const pokemon = document.getElementsByClassName('pokemon')
+  // const pokemon = document.getElementsByClassName('pokemon')
   const pokedex = document.querySelector('#pokedex')
-  // console.log(pokemon)
+  
 
   });
