@@ -86,6 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
       dexEntry.innerText = addName
       dexEntry.id = 'caught-' + addName
       miniContainer.appendChild(dexEntry)
+      miniContainer.className = "unliked"
       dexEntry.addEventListener('click', choosePokemon)
       pokedex.className = ''
       const deleteBTN = document.createElement('button')
@@ -97,19 +98,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function choosePokemon(e){
-      // console.log(e.target.parentNode)
-
-    
       if(e.target.innerText[0] === '♥'){
         const makeArr = e.target.innerText.split(' ');
         e.target.innerText = makeArr[1]
         e.target.style.color = 'white'
-         
-       }else{
+        e.target.parentNode.className = "unliked"
+        
+      }else{
         const heartName = '♥ ' + e.target.innerText
         e.target.innerHTML = heartName
         e.target.style.color = 'red'
-        }
+        e.target.parentNode.className = "liked"
+      }
+      
+      console.log(e.target.parentNode)
 
     }
 

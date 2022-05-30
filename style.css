@@ -95,6 +95,9 @@ body {
     padding: 1em;
     min-width: 10px;
 
+    display:flex;
+    flex-direction: column;
+
     position: fixed;
     top: 20%;
     left: 0;
@@ -103,7 +106,7 @@ body {
   }
 
   .hidden {
-    display: none;
+    visibility: hidden;
   }
 
   .button {
@@ -112,4 +115,11 @@ body {
 
   .delete {
     border-radius: 10px;
+  }
+
+  .liked {
+    order: 1;
+  }
+  .unliked {
+    order: 2;
   }
