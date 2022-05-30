@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
       fetch(pokeAPI + name)
       .then((res)=> res.json())
       .then((data)=> {
-      // console.log(data)
       cardConstruct(data)
       })
       .catch(function(error){
@@ -94,7 +93,6 @@ document.addEventListener("DOMContentLoaded", () => {
       deleteBTN.className = 'delete'
       miniContainer.appendChild(deleteBTN)
       deleteBTN.addEventListener('click', removeFromDex)
-      // console.log(pokedex)
     }
 
     function choosePokemon(e){
@@ -110,16 +108,12 @@ document.addEventListener("DOMContentLoaded", () => {
         e.target.style.color = 'red'
         e.target.parentNode.className = "liked"
       }
-      
-      console.log(e.target.parentNode)
-
     }
 
     function removeFromDex(e){
       
       e.target.parentNode.remove()
       runCheck()
-      console.log(pokedex.innerHTML)
     }
 
     document.querySelector("#open-dex").addEventListener("click",(e)=>{
@@ -131,17 +125,13 @@ document.addEventListener("DOMContentLoaded", () => {
     })
 
     function runCheck(){
-        // console.log(pokedex.firstChild.typeof)
-        // console.log(pokedex.innerHTML.length)
         if(pokedex.innerHTML.length <= 4){
           pokedex.className = "hidden"
         }
         
       }
-    // }
 
   const pokecard = document.querySelector("#pokecard")
-  // const pokemon = document.getElementsByClassName('pokemon')
   const pokedex = document.querySelector('#pokedex')
   
 
