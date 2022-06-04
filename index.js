@@ -1,5 +1,18 @@
 document.addEventListener("DOMContentLoaded", () => {
   
+  fetch("http://localhost:3000/pokemon")
+  .then((res)=> res.json())
+  .then((data)=>{
+    console.log(data)
+
+    data.forEach(item => console.log(item))
+
+    data.forEach(item => firstConstruct(item))
+
+    pokedex.className = "hidden"
+  })
+  
+
   let form = document.querySelector("form")
   form.addEventListener("submit", (e) =>{
     e.preventDefault()
@@ -9,12 +22,17 @@ document.addEventListener("DOMContentLoaded", () => {
   })
     
     const pokeAPI = 'https://pokeapi.co/api/v2/pokemon/'
+
+    let newObj
  
     function loadPage(name) {
       fetch(pokeAPI + name)
       .then((res)=> res.json())
       .then((data)=> {
+        console.log(data)
       cardConstruct(data)
+      newObj = makeObj(data)
+      console.log(newObj)
       })
       .catch(function(error){
         const modal = document.querySelector('div#modal')
@@ -29,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const cardDefault = `${data.sprites.other['official-artwork'].front_default}`
     
     const cardData = 
-    `<div className ='pokemon' id='${data.name}'>
+    `<div className ='pokemon' id='${data.id}'>
     <ul>
       <li>Name: ${data.name}</li>
       <li>Abilities:</li>
@@ -53,7 +71,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const card = document.createElement('div')
       card.className = 'pokemon'
-      card.id = data.name
+      card.name = data.name
+      card.id = data.id
       pokecard.appendChild(card)
       const imgCon = document.createElement('img')
       imgCon.className = 'poke-pic'
@@ -71,6 +90,9 @@ document.addEventListener("DOMContentLoaded", () => {
       card.appendChild(cardFooter)
       cardFooter.appendChild(catchPoke)
       catchPoke.addEventListener('click', addToPokedex)
+      imgCon.addEventListener("dblclick", (e)=>{
+        e.target.requestFullscreen()
+      })
     }
 
     function clearCard(){
@@ -78,12 +100,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function addToPokedex(e){
-      let addName = e.target.parentNode.parentNode.id
+      let addName = e.target.parentNode.parentNode.name
       const miniContainer = document.createElement('div')
       pokedex.appendChild(miniContainer)
       const dexEntry = document.createElement('p')
       dexEntry.innerText = addName
-      dexEntry.id = 'caught-' + addName
+      dexEntry.name = 'caught-' + addName
+      dexEntry.id = e.target.parentNode.parentNode.id
       miniContainer.appendChild(dexEntry)
       miniContainer.className = "unliked"
       dexEntry.addEventListener('click', choosePokemon)
@@ -93,8 +116,9 @@ document.addEventListener("DOMContentLoaded", () => {
       deleteBTN.className = 'delete'
       miniContainer.appendChild(deleteBTN)
       deleteBTN.addEventListener('click', removeFromDex)
+      submitData(newObj)
     }
-
+    
     function choosePokemon(e){
       if(e.target.innerText[0] === '♥'){
         const makeArr = e.target.innerText.split(' ');
@@ -109,11 +133,13 @@ document.addEventListener("DOMContentLoaded", () => {
         e.target.parentNode.className = "liked"
       }
     }
-
+    
     function removeFromDex(e){
-      
+
       e.target.parentNode.remove()
       runCheck()
+      removeData(e.target.parentNode.firstChild.id)
+
     }
 
     document.querySelector("#open-dex").addEventListener("click",(e)=>{
@@ -125,11 +151,68 @@ document.addEventListener("DOMContentLoaded", () => {
     })
 
     function runCheck(){
-        if(pokedex.innerHTML.length <= 4){
+
+        if(pokedex.innerHTML.length <= 5){
           pokedex.className = "hidden"
         }
         
       }
+
+      function firstConstruct(obj) {
+        let addName = obj.Name
+        const miniContainer = document.createElement('div')
+        pokedex.appendChild(miniContainer)
+        const dexEntry = document.createElement('p')
+        dexEntry.innerText = addName
+        dexEntry.name = 'caught-' + addName
+        dexEntry.id = obj.id
+        miniContainer.appendChild(dexEntry)
+        miniContainer.className = "unliked"
+        dexEntry.addEventListener('click', choosePokemon)
+        pokedex.className = ''
+        const deleteBTN = document.createElement('button')
+        deleteBTN.innerText = 'x'
+        deleteBTN.className = 'delete'
+        miniContainer.appendChild(deleteBTN)
+        deleteBTN.addEventListener('click', removeFromDex)
+      }
+
+      function makeObj(data){
+        return {
+          "Img": [data.sprites.other['official-artwork'].front_default, data.sprites.front_default, data.sprites.other.dream_world.front_default, data.sprites.other.home.front_default],
+          "Name": data.name, 
+          "Abilities": [
+            data.abilities[0].ability.name,
+            data.abilities[1].ability.name
+          ],
+          "Height": data.height,
+          "Weight": data.weight,
+          "stats": data.stats,
+          "id": data.id,
+     
+      }
+    }
+
+    function submitData(obj) {
+      return fetch("http://localhost:3000/pokemon",{
+          method: "POST",
+          headers: {
+              "Content-type": "application/json",
+              Accept: "application/json",
+          },
+          body: JSON.stringify(obj)
+      })
+    }
+
+    function removeData(obj) {
+      return fetch("http:localhost:3000/pokemon/" + obj,{
+        method: "DELETE",
+        headers: {
+          "Content-type": "application/json",
+          Accept: "application/json",
+      }
+      })
+    }
 
   const pokecard = document.querySelector("#pokecard")
   const pokedex = document.querySelector('#pokedex')
