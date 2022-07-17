@@ -8,3 +8,5 @@ To add the pokemon to your Pokedex click the catch this Pokemon button.
 to favorite a Pokemon click it's name in the pokedex.
 
 Beta test version of App. More features being worked on.
+
+Site hosted at [Pokemon Catcher](https://virgomoon.github.io/phase-1-project/)
